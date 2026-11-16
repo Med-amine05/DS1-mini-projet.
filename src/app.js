@@ -7,3 +7,4 @@ app.use(express.json());
 app.get('/', (req, res) => res.json({ message: 'API opérationnelle' }));
 
 module.exports = app;
+app.use('/api/projects', require('./routes/project.routes'));
