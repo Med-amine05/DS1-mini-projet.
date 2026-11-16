@@ -66,3 +66,22 @@ exports.supprimer = async (req, res) => {
   if (!tache) return res.status(404).json({ message: 'Tâche introuvable' });
   res.json({ message: 'Tâche supprimée' });
 };
+const User = require('../models/user');
+
+// Seul le manager passe ici (protégé par le middleware role dans la route)
+exports.affecter = async (req, res) => {
+  try {
+    const user = await User.findById(req.body.utilisateurId);
+    if (!user) return res.status(404).json({ message: 'Utilisateur introuvable' });
+
+    const tache = await Task.findByIdAndUpdate(
+      req.params.id,
+      { utilisateurAssigne: user._id },
+      { new: true }
+    );
+    if (!tache) return res.status(404).json({ message: 'Tâche introuvable' });
+    res.json(tache);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
