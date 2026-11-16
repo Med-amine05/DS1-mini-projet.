@@ -5,6 +5,7 @@ const c = require('../controllers/task.controller');
 router.use(auth);
 
 router.post('/', c.creer);
-router.get('/:id', c.detail);
+router.route('/:id').get(c.detail).put(c.modifier).delete(c.supprimer);
+router.get('/', c.lister)
 
 module.exports = router;
